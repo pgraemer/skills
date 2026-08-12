@@ -1,6 +1,6 @@
 ---
 name: frontend-review
-description: Review Vue component CSS/SCSS for self-containment and the helper-class hierarchy (iai- → kds- → tailwind → own class). Use when reviewing or writing frontend styles, .vue components, or SCSS — e.g. "review this component's styles", "is this CSS okay", or before committing frontend changes that touch templates or style blocks.
+description: Review Vue component CSS/SCSS for self-containment and the helper-class hierarchy (iai- → kds- → tailwind → own class), and check that GraphQL documents live as consts next to their hooks. Use when reviewing or writing frontend styles, .vue components, SCSS, or Apollo hooks — e.g. "review this component's styles", "is this CSS okay", or before committing frontend changes that touch templates, style blocks, or query/mutation hooks.
 ---
 
 # Frontend style review
@@ -14,7 +14,7 @@ A component owns its internal layout and ships every style it needs. A parent mu
 **Ownership split (the boundary is the component's root element):**
 
 - **Child owns everything inside its root:** its own `display: flex`/`grid` for laying out its children, internal spacing, appearance.
-- **Parent owns the child's external geometry:** where it sits, gaps between siblings (prefer `gap` on the parent container over margins), and the size of the slot it occupies — `flex: 1`, `width`, `grid-area` *on the child's host element* is parent business.
+- **Parent owns the child's external geometry:** where it sits, gaps between siblings (prefer `gap` on the parent container over margins), and the size of the slot it occupies — `flex: 1`, `width`, `grid-area` _on the child's host element_ is parent business.
 
 **Violations to flag:**
 
@@ -23,14 +23,14 @@ A component owns its internal layout and ships every style it needs. A parent mu
 - A parent styling a child's internals: selectors targeting the child's root class, or passing classes that reach into the child's DOM.
 - `:deep()` into **our own components: hard ban, no exceptions.** If a parent needs to vary a child's appearance, the child exposes a prop, a slot, or a CSS custom property — that's the child's public style API, and custom properties are the sanctioned way to pass style decisions across the boundary.
 - `:deep()` into **KDS/third-party internals: last resort only** — first check the component's props/design-token API. Every such `:deep()` must carry a one-line comment naming what KDS lacks that forced it (the audit trail for KDS upgrades). Flag any uncommented `:deep()`.
-- Styles for a component defined in a *different* component's `<style>` block, or in a shared stylesheet when only one component uses them.
+- Styles for a component defined in a _different_ component's `<style>` block, or in a shared stylesheet when only one component uses them.
 - A component that renders broken/unstyled unless a sibling stylesheet is imported somewhere up the tree.
 
 **Correct shape:** `<style scoped lang="scss">` is the only sanctioned block form in components.
 
 - Plain `<style scoped>` without SCSS → nit: migrate when touched, not a hard failure, no blanket rewrites.
 - Unscoped `<style>` in a component → violation, unless it overrides KDS/third-party globals — then it needs a one-line comment stating what forced it (same rule as `:deep()`).
-- Global class names must be prefixed (`iai-`, and that set is frozen — see Rule 2). The "short names" rule below applies *inside scoped blocks only*; nothing short and unprefixed may ever go global.
+- Global class names must be prefixed (`iai-`, and that set is frozen — see Rule 2). The "short names" rule below applies _inside scoped blocks only_; nothing short and unprefixed may ever go global.
 
 ## Rule 2 — Helper hierarchy (strict order)
 
@@ -38,7 +38,7 @@ When a template needs a style, resolve it in this order. Only fall through when 
 
 1. **`iai-` helpers** — our own utilities, defined in `frontend/shared/src/styles/shared.scss` (e.g. `iai-no-wrap`, `iai-text-ellipsis`, `iai-cursor-pointer`, `iai-border`, `iai-no-flex-shrink`). Check this file first; it's short. **This set is frozen for reads-first, not a growth layer:** never add a new `iai-` helper as part of ordinary work — additions require an explicit team decision. `kds-` is the default home for token-based styling; flag any PR that introduces a new `iai-` class.
 2. **`kds-` utility classes** — the design-system utilities (spacing `kds-p-4`/`kds-mb-2`/`kds-px-3`, typography `kds-font-bold`/`kds-text-caption`, grid `kds-row`/`kds-col-6`/`kds-no-gutter`, alignment `kds-start`/`kds-end`, display `kds-display-flex`). Prefer these for spacing, typography, and grid — they carry the design tokens.
-3. **Tailwind** — available (v4 via `@tailwindcss/vite`), but **structural/behavioral utilities only**: things that carry no design-token value — `flex`, `grid`, `items-center`, `justify-between`, `relative`/`absolute`, `overflow-hidden`, `truncate`, `shrink-0`, `w-full`. **Hard ban on Tailwind classes that encode a themable value**: spacing (`p-*`, `m-*`, `gap-*`), colors (`text-*-500`, `bg-*`), font sizes/weights, radii, shadows — those come from Tailwind's scale, not KDS tokens, and drift. Mechanical check: *Tailwind class encodes a design value → violation.* If kds- lacks a token-carrying utility you need, fall through to level 4 with a KDS token/variable — never to Tailwind's scale.
+3. **Tailwind** — available (v4 via `@tailwindcss/vite`), but **structural/behavioral utilities only**: things that carry no design-token value — `flex`, `grid`, `items-center`, `justify-between`, `relative`/`absolute`, `overflow-hidden`, `truncate`, `shrink-0`, `w-full`. **Hard ban on Tailwind classes that encode a themable value**: spacing (`p-*`, `m-*`, `gap-*`), colors (`text-*-500`, `bg-*`), font sizes/weights, radii, shadows — those come from Tailwind's scale, not KDS tokens, and drift. Mechanical check: _Tailwind class encodes a design value → violation._ If kds- lacks a token-carrying utility you need, fall through to level 4 with a KDS token/variable — never to Tailwind's scale.
 4. **Own class + SCSS** — last resort, when the styling can't be expressed with the above (component-specific layout, states, transitions, computed sizes).
 
 **Review checks:**
@@ -57,14 +57,24 @@ When a template needs a style, resolve it in this order. Only fall through when 
 - **SCSS features — sanctioned:** nesting (≤3 deep), `&` for states/modifiers (`&.active`, `&:hover`), local variables for repeated values within a component, shared variables/mixins imported from `shared/` for genuinely cross-component patterns.
 - **SCSS features — banned:** `@extend`, always — it rewrites and hoists selectors invisibly, bloats output, and misbehaves across scoped boundaries. A shared visual pattern is a mixin, or more often a sign it should be a shared component or existing helper. Loops/maps/functions belong only in the shared stylesheet layer (where helpers are generated), never inside a component block.
 
+## Rule 4 — GraphQL documents live with their hooks
+
+A query or mutation document belongs as a `const` in the same file as the composable (`use*`) hook that consumes it — not in a separate query/mutation file or a shared `queries/` barrel.
+
+- Define the document with `graphql(/* GraphQL */ \`...\`)`as a`const` in the hook file; export it (named) only if a spec needs it as a mock handler key.
+- **Flag** a standalone `frontend/**/queries/**/somethingQuery.ts` / `somethingMutation.ts` whose sole purpose is to hold one document that a single hook uses — inline it into the hook and drop the barrel export.
+- Colocation keeps the document, its variables type, and its cache/`invalidateRootFields` wiring in one place; a separate file just adds an indirection and an export to keep in sync.
+- Exception: a document genuinely shared by multiple hooks/components may live in a shared location — but that must be a real second consumer, not a speculative one.
+- Generated files (`**/generated/**`) are off-limits — never hand-edit them, and a document string change requires re-running codegen (`npm run generate:graphql`).
+
 ## Scope & severity
 
-**Diff-scoped:** review only changed lines/components. Pre-existing violations in a *touched* file get one collapsed mention ("pre-existing, not from this change — optional cleanup"), never mixed into the main findings. Untouched files are off-limits. Never ask a PR to fix violations it didn't introduce.
+**Diff-scoped:** review only changed lines/components. Pre-existing violations in a _touched_ file get one collapsed mention ("pre-existing, not from this change — optional cleanup"), never mixed into the main findings. Untouched files are off-limits. Never ask a PR to fix violations it didn't introduce.
 
 **Two tiers:**
 
 - **Must-fix (blocking):** self-containment breaks — parent styling child internals, `:deep()` into own components, inner layout depending on parent CSS. These export coupling across components and get harder to remove every day.
-- **Should-fix (advisory):** hierarchy violations (custom CSS duplicating an existing helper, Tailwind token-values, uncommented `:deep()` into KDS), BEM names, self-margins on roots, plain `<style scoped>` without SCSS.
+- **Should-fix (advisory):** hierarchy violations (custom CSS duplicating an existing helper, Tailwind token-values, uncommented `:deep()` into KDS), BEM names, self-margins on roots, plain `<style scoped>` without SCSS, single-use GraphQL documents split into their own file instead of colocated with their hook (Rule 4).
 
 ## Output format
 
