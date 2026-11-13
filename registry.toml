@@ -5,5 +5,4 @@ version = 1
 # so both are needed.
 [[import]]
 url = "https://github.com/mattpocock/skills.git"
-ref = "5863806dd4e15c63174bee4e7515a4256792ecfa"
 skills = ["grill-me", "grilling"]
