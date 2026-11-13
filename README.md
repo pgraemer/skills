@@ -9,7 +9,7 @@ Codex and Gemini CLI read them.
 
 | Skill | What it does |
 |---|---|
-| [`grill-me`](misc/grill-me/SKILL.md) | Interviews you about a plan or design, one question at a time, until every branch of the decision tree is resolved. |
+| `grill-me`, `grilling` | Interviews you about a plan or design until every branch of the decision tree is resolved. Imported from [mattpocock/skills](https://github.com/mattpocock/skills), see `registry.toml`. |
 | [`friction-driven-development`](misc/friction-driven-development/SKILL.md) | Lets someone without inside knowledge try a real task through one surface of a product, and fixes what gets in their way: each friction point is verified, fixed with the smallest change and confirmed by another attempt. |
 
 ## Subscribe
@@ -43,6 +43,6 @@ To propose a skill from a project where it was written:
 spellbook push .claude/skills/my-skill --to pgraemer
 ```
 
-There is no `registry.toml` on purpose: without one, every skill here is
-offered to every subscriber. Groups are only worth it once different
-people should get different sets.
+`registry.toml` holds the imports from other repositories. It defines no
+groups on purpose: without them, every skill here is offered to every
+subscriber. To update an imported skill, move its `ref` to a newer commit.

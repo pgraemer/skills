@@ -1,0 +1,9 @@
+version = 1
+
+# grill-me is Matt Pocock's skill. It is imported instead of copied, so it
+# can be updated by moving the ref. It hands over to his "grilling" skill,
+# so both are needed.
+[[import]]
+url = "https://github.com/mattpocock/skills.git"
+ref = "5863806dd4e15c63174bee4e7515a4256792ecfa"
+skills = ["grill-me", "grilling"]
