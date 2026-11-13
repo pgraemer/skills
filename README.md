@@ -10,7 +10,7 @@ Codex and Gemini CLI read them.
 | Skill | What it does |
 |---|---|
 | [`grill-me`](misc/grill-me/SKILL.md) | Interviews you about a plan or design, one question at a time, until every branch of the decision tree is resolved. |
-| [`experiment-user`](misc/experiment-user/SKILL.md) | Runs a usability experiment: a simulated user tries a task through one channel of a product, friction is fixed during the run, and a friction report comes out. |
+| [`friction-driven-development`](misc/friction-driven-development/SKILL.md) | Lets someone without inside knowledge try a real task through one surface of a product, and fixes what gets in their way: each friction point is verified, fixed with the smallest change and confirmed by another attempt. |
 
 ## Subscribe
 
