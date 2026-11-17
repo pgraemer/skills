@@ -37,8 +37,3 @@ has to read, debug and change it later. "It works" is not done.
   tests.
 * **Review skill:** If the repository has a review skill, run it as the
   last step.
-
-## Shell
-
-* Don't prefix commands with `cd`. Use absolute paths or the tool's
-  working-directory option.
