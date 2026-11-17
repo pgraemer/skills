@@ -6,3 +6,9 @@ version = 1
 [[import]]
 url = "https://github.com/mattpocock/skills.git"
 skills = ["grill-me", "grilling"]
+
+# security-audit is Cloudflare's skill, pinned to a commit.
+[[import]]
+url = "https://github.com/cloudflare/security-audit-skill.git"
+ref = "c1c8a8c"
+skills = ["security-audit"]
