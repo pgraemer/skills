@@ -21,7 +21,6 @@ Standing guidance that always applies. Each is a Markdown file in
 |---|---|
 | [`coding`](instructions/coding.md) | The agent owns the code it writes, plus comments, TypeScript, testing, verification and shell use. |
 | [`writing`](instructions/writing.md) | Prose style, commits, pull requests and tickets. |
-| [`koerber`](instructions/koerber.md) | Rules for my work at Körber: the design system's CSS and a marker on GitHub comments. |
 
 ## Subscribe
 
