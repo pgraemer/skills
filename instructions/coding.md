@@ -26,8 +26,6 @@ has to read, debug and change it later. "It works" is not done.
   rationale, business logic), in two sentences or fewer.
 * **TypeScript:** Avoid `as` assertions. Use type guards, narrowing,
   inference or generics.
-* **Vue i18n:** When you touch a component that uses the global `$t`,
-  migrate it to the local `t()` composable with an `<i18n>` block.
 
 ## Testing and verification
 
