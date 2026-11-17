@@ -1,9 +1,9 @@
 # skills
 
-My skills for AI coding tools. This repository is a
+My skills and instructions for AI coding tools. This repository is a
 [Spellbook](https://github.com/graemer-org/spellbook) registry: subscribe to
-it, and the skills are copied to where Claude Code, GitHub Copilot, Cursor,
-Codex and Gemini CLI read them.
+it, and they are copied to where Claude Code, GitHub Copilot, Cursor, Codex
+and Gemini CLI read them.
 
 ## Skills
 
@@ -12,6 +12,16 @@ Codex and Gemini CLI read them.
 | `grill-me`, `grilling` | Interviews you about a plan or design until every branch of the decision tree is resolved. Imported from [mattpocock/skills](https://github.com/mattpocock/skills), see `registry.toml`. |
 | [`friction-driven-development`](misc/friction-driven-development/SKILL.md) | Lets someone without inside knowledge try a real task through one surface of a product, and fixes what gets in their way: each friction point is verified, fixed with the smallest change and confirmed by another attempt. |
 
+## Instructions
+
+Standing guidance that always applies. Each is a Markdown file in
+`instructions/`.
+
+| Instruction | What it covers |
+|---|---|
+| [`coding`](instructions/coding.md) | The agent owns the code it writes, plus comments, TypeScript, testing and verification. |
+| [`writing`](instructions/writing.md) | Prose style, commits, pull requests and tickets. |
+
 ## Subscribe
 
 ```sh
@@ -19,13 +29,14 @@ spellbook init
 spellbook registry add pgraemer https://github.com/pgraemer/skills.git
 ```
 
-Only one of them:
+Only some of it:
 
 ```sh
 spellbook registry add pgraemer https://github.com/pgraemer/skills.git --skill grill-me
+spellbook registry add pgraemer https://github.com/pgraemer/skills.git --instruction coding --instruction writing
 ```
 
-In a project instead of the home directory, so the skills are committed
+In a project instead of the home directory, so the files are committed
 with the repository, add `--project` to both commands.
 
 `spellbook sync` fetches newer versions later.
@@ -44,5 +55,5 @@ spellbook push .claude/skills/my-skill --to pgraemer
 ```
 
 `registry.toml` holds the imports from other repositories. It defines no
-groups on purpose: without them, every skill here is offered to every
+groups on purpose: without them, everything here is offered to every
 subscriber. To update an imported skill, move its `ref` to a newer commit.
