@@ -10,6 +10,7 @@ and Gemini CLI read them.
 | Skill | What it does |
 |---|---|
 | `grill-me`, `grilling` | Interviews you about a plan or design until every branch of the decision tree is resolved. Imported from [mattpocock/skills](https://github.com/mattpocock/skills), see `registry.toml`. |
+| `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools and libraries, up to a full audit with a report. Imported from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill), see `registry.toml`. |
 | [`friction-driven-development`](misc/friction-driven-development/SKILL.md) | Lets someone without inside knowledge try a real task through one surface of a product, and fixes what gets in their way: each friction point is verified, fixed with the smallest change and confirmed by another attempt. |
 
 ## Instructions
