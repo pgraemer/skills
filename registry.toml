@@ -12,3 +12,10 @@ skills = ["grill-me", "grilling"]
 url = "https://github.com/cloudflare/security-audit-skill.git"
 ref = "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8"
 skills = ["security-audit"]
+
+# agent-browser is Vercel's skill for its browser automation CLI, pinned to
+# a commit. It needs the CLI: npm i -g agent-browser && agent-browser install
+[[import]]
+url = "https://github.com/vercel-labs/agent-browser.git"
+ref = "b06e2533ba9b3823b8a96c859d455cb55f4d7893"
+skills = ["agent-browser"]
