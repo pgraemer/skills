@@ -3,8 +3,10 @@ name: Imports
 # registry.toml pins every import to a commit, so this registry only changes
 # when someone commits to it. This workflow looks once a day whether one of
 # the imported repositories changed what is taken from it, and opens a pull
-# request that moves the pins. It fails when an import cannot be compared or
-# cannot be moved, so that does not go unnoticed either.
+# request that moves the pins. Where the repository does not let workflows
+# open pull requests (Settings, Actions, General), it opens an issue with a
+# link to the prepared branch instead. It fails when an import cannot be
+# compared or cannot be moved, so that does not go unnoticed either.
 on:
   schedule:
     - cron: "17 5 * * *"
@@ -13,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: imports-${{ github.ref_name }}
@@ -23,6 +26,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       BRANCH: spellbook/update-imports
+      TITLE: Move imports to their newest commits
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -58,12 +62,25 @@ jobs:
           git checkout --quiet -B "$BRANCH"
           git commit --quiet -m "chore: move imports to their newest commits" -- registry.toml
           git push --quiet --force origin "$BRANCH"
-          number=$(gh pr list --head "$BRANCH" --base "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          number=$(gh pr list --head "$BRANCH" --base "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number // empty')
           if [ -n "$number" ]; then
             gh pr edit "$number" --body-file "$RUNNER_TEMP/body.md"
+            exit 0
+          fi
+          if gh pr create --head "$BRANCH" --base "$GITHUB_REF_NAME" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"; then
+            exit 0
+          fi
+          {
+            echo
+            echo "This repository does not let workflows open pull requests, so the"
+            echo "change waits on a branch:"
+            echo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/$GITHUB_REF_NAME...$BRANCH?expand=1"
+          } >> "$RUNNER_TEMP/body.md"
+          number=$(gh issue list --state open --json number,title --jq "map(select(.title == \"$TITLE\")) | .[0].number // empty")
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$RUNNER_TEMP/body.md"
           else
-            gh pr create --head "$BRANCH" --base "$GITHUB_REF_NAME" \
-              --title "Move imports to their newest commits" --body-file "$RUNNER_TEMP/body.md"
+            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
           fi
       - name: Fail for an import that could not be moved
         run: spellbook registry imports --check
