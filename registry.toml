@@ -19,3 +19,10 @@ skills = ["security-audit"]
 url = "https://github.com/vercel-labs/agent-browser.git"
 ref = "b06e2533ba9b3823b8a96c859d455cb55f4d7893"
 skills = ["agent-browser"]
+
+# hallmark is Together AI's design skill for new pages. It has no ref on
+# purpose, so it follows the default branch of its repository. It needs
+# Node 18; the browser checks also need puppeteer-core and Chrome.
+[[import]]
+url = "https://github.com/Nutlope/hallmark.git"
+skills = ["hallmark"]

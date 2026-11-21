@@ -12,6 +12,7 @@ and Gemini CLI read them.
 | `grill-me`, `grilling` | Interviews you about a plan or design until every branch of the decision tree is resolved. Imported from [mattpocock/skills](https://github.com/mattpocock/skills), see `registry.toml`. |
 | `security-audit` | Security guidance and vulnerability review for codebases, APIs, services, CLI tools and libraries, up to a full audit with a report. Imported from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill), see `registry.toml`. |
 | `agent-browser` | Lets the agent drive a browser through the `agent-browser` CLI: open pages, fill forms, click, take screenshots, test web apps. Needs the CLI (`npm i -g agent-browser && agent-browser install`). Imported from [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser), see `registry.toml`. |
+| `hallmark` | Designs new websites and pages that do not look generated: deals a theme, builds the page around what the visitor came to do and lints the result. Also `redesign` and `audit` when named. Needs Node 18; the browser checks also need `puppeteer-core` and Chrome. Imported from [Nutlope/hallmark](https://github.com/Nutlope/hallmark), see `registry.toml`. |
 | [`friction-driven-development`](misc/friction-driven-development/SKILL.md) | Lets someone without inside knowledge try a real task through one surface of a product, and fixes what gets in their way: each friction point is verified, fixed with the smallest change and confirmed by another attempt. |
 
 ## Instructions
