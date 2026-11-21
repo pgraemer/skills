@@ -59,4 +59,15 @@ spellbook push .claude/skills/my-skill --to pgraemer
 
 `registry.toml` holds the imports from other repositories. It defines no
 groups on purpose: without them, everything here is offered to every
-subscriber. To update an imported skill, move its `ref` to a newer commit.
+subscriber.
+
+Every import is pinned to a commit. Once a day the
+[Imports workflow](.github/workflows/imports.yml) runs
+`spellbook registry imports --update` and opens a pull request when an
+imported repository changed one of the skills taken from it. To look by
+hand:
+
+```sh
+spellbook registry imports            # which pins are behind
+spellbook registry imports --update   # move them in registry.toml
+```

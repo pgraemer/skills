@@ -1,0 +1,70 @@
+name: Imports
+
+# registry.toml pins every import to a commit, so this registry only changes
+# when someone commits to it. This workflow looks once a day whether one of
+# the imported repositories changed what is taken from it, and opens a pull
+# request that moves the pins. It fails when an import cannot be compared or
+# cannot be moved, so that does not go unnoticed either.
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: imports-${{ github.ref_name }}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: spellbook/update-imports
+      REPORT: ${{ runner.temp }}/imports.txt
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+      - name: Install Spellbook
+        run: go install github.com/graemer-org/spellbook/cmd/spellbook@main
+      - name: Move outdated imports
+        shell: bash
+        run: spellbook registry imports --update | tee "$REPORT"
+      - name: Open or update the pull request
+        shell: bash
+        run: |
+          if git diff --quiet -- registry.toml; then
+            echo "No import is outdated."
+            exit 0
+          fi
+          {
+            echo "An imported repository changed what this registry takes from it."
+            echo "\`spellbook registry imports --update\` moved the pins:"
+            echo
+            echo '```'
+            cat "$REPORT"
+            echo '```'
+            echo
+            echo "\`+\` is new, \`~\` changed, \`-\` gone. Look at the changes in the"
+            echo "imported repositories before merging: subscribers get them with"
+            echo "their next sync."
+          } > "$RUNNER_TEMP/body.md"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --quiet -B "$BRANCH"
+          git commit --quiet -m "chore: move imports to their newest commits" -- registry.toml
+          git push --quiet --force origin "$BRANCH"
+          number=$(gh pr list --head "$BRANCH" --base "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh pr edit "$number" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --head "$BRANCH" --base "$GITHUB_REF_NAME" \
+              --title "Move imports to their newest commits" --body-file "$RUNNER_TEMP/body.md"
+          fi
+      - name: Fail for an import that could not be moved
+        run: spellbook registry imports --check
