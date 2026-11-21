@@ -1,10 +1,11 @@
 version = 1
 
-# grill-me is Matt Pocock's skill. It is imported instead of copied, so it
-# can be updated by moving the ref. It hands over to his "grilling" skill,
-# so both are needed.
+# grill-me is Matt Pocock's skill, pinned to a commit. It is imported
+# instead of copied, so it can be updated by moving the ref. It hands over
+# to his "grilling" skill, so both are needed.
 [[import]]
 url = "https://github.com/mattpocock/skills.git"
+ref = "abeeaf95660ba9e8b7c753eb38f441ca707a8823"
 skills = ["grill-me", "grilling"]
 
 # security-audit is Cloudflare's skill, pinned to a commit.
@@ -17,12 +18,12 @@ skills = ["security-audit"]
 # a commit. It needs the CLI: npm i -g agent-browser && agent-browser install
 [[import]]
 url = "https://github.com/vercel-labs/agent-browser.git"
-ref = "b06e2533ba9b3823b8a96c859d455cb55f4d7893"
+ref = "1fde6b90e8f17474b2f122d4b4ce43a7fa0a6aa0"
 skills = ["agent-browser"]
 
-# hallmark is Together AI's design skill for new pages. It has no ref on
-# purpose, so it follows the default branch of its repository. It needs
-# Node 18; the browser checks also need puppeteer-core and Chrome.
+# hallmark is Together AI's design skill for new pages, pinned to a commit.
+# It needs Node 18; the browser checks also need puppeteer-core and Chrome.
 [[import]]
 url = "https://github.com/Nutlope/hallmark.git"
+ref = "04977e15f3dfd6ee4b74c887dac3eb52665d6c92"
 skills = ["hallmark"]
