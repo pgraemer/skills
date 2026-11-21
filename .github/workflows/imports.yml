@@ -23,7 +23,6 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       BRANCH: spellbook/update-imports
-      REPORT: ${{ runner.temp }}/imports.txt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -34,7 +33,7 @@ jobs:
         run: go install github.com/graemer-org/spellbook/cmd/spellbook@main
       - name: Move outdated imports
         shell: bash
-        run: spellbook registry imports --update | tee "$REPORT"
+        run: spellbook registry imports --update | tee "$RUNNER_TEMP/imports.txt"
       - name: Open or update the pull request
         shell: bash
         run: |
@@ -47,7 +46,7 @@ jobs:
             echo "\`spellbook registry imports --update\` moved the pins:"
             echo
             echo '```'
-            cat "$REPORT"
+            cat "$RUNNER_TEMP/imports.txt"
             echo '```'
             echo
             echo "\`+\` is new, \`~\` changed, \`-\` gone. Look at the changes in the"
