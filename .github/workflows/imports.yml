@@ -34,6 +34,10 @@ jobs:
           go-version: stable
           cache: false
       - name: Install Spellbook
+        # Asked directly instead of through the module proxy, which can
+        # serve an older release as the latest for a while.
+        env:
+          GOPROXY: direct
         run: go install github.com/graemer-org/spellbook/cmd/spellbook@latest
       - name: Move outdated imports
         shell: bash
