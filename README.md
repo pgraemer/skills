@@ -23,6 +23,7 @@ Standing guidance that always applies. Each is a Markdown file in
 |---|---|
 | [`coding`](instructions/coding.md) | The agent owns the code it writes, plus comments, TypeScript, testing and verification. |
 | [`writing`](instructions/writing.md) | Prose style, commits, pull requests and tickets. |
+| [`jira`](instructions/jira.md) | Keeps a named Jira ticket in step with the work: in progress, assignee, active sprint, review. |
 
 ## Subscribe
 
