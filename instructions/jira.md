@@ -25,5 +25,11 @@ step with the work, without me asking for it.
   and other people's assignments alone unless I ask.
 * **Only reading is no work.** A question about a ticket, or looking
   something up in it, changes nothing.
-* **Tell me.** Say in one line what you changed in the ticket. If you have
-  no access to Jira, say so once and carry on with the work.
+* **Tell me.** Say in one line what you changed in the ticket.
+* **Without access, remind me.** Jira is not always connected, and
+  sometimes it can be read but not written. Don't let that hold up the
+  work. When you can't make a change yourself, tell me at that moment
+  exactly what to do by hand (for example "move ABC-123 to In Progress and
+  into the active sprint"), and repeat what is still open at the end of
+  your reply. If you can't read the ticket either, say so and ask me for
+  what you need from it.
