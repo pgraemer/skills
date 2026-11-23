@@ -14,8 +14,9 @@ step with the work, without me asking for it.
   move it to "In Progress". If it has no assignee, assign it to me. If it
   is in no sprint and its board has an active one, put it into the active
   sprint.
-* **Review:** When a pull request for the ticket is open, link it in the
-  ticket and move the ticket to the review status, if its workflow has one.
+* **Review:** When a pull request for the ticket is open, move the ticket
+  to the review status, if its workflow has one. Don't link the pull
+  request in the ticket.
 * **Done is my call.** Never move a ticket to a closed or done status, and
   never move one backwards, unless I ask.
 * **Use the workflow as it is.** Status names differ per project. Look up
