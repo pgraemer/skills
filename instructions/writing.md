@@ -10,9 +10,15 @@ description: How I want prose, commits, pull requests and tickets written
 * **No AI attribution.** Never mention Claude, Copilot or an AI session in
   commit messages, PRs or issues. Add no `Co-authored-by` trailers and no
   session links or IDs, even if a tool adds them by default.
-* **Pull requests:** Keep the description short: what changed and why.
-  Don't restate the diff. Add a `Testing` section only if testing went
-  beyond CI.
+* **Pull requests:** Keep the description short, and explain what the
+  diff can't: how the change is built and why it was made that way. Don't
+  restate the code changes file by file.
+* **Frontend changes** ideally come with a screenshot of the result in the
+  description: the page or the component. A mock is fine.
+* **No routine checks in a pull request.** Leave out test runs and
+  validations that belong to the toolchain anyway, such as `npm run lint`
+  or `npm run test`. Add a `Testing` section only for testing that went
+  beyond that.
 * **Acceptance criteria:** Write them from the user's perspective, as
   observable behavior, preferably as Given/When/Then. Never name
   implementation details such as services, payloads or APIs.
