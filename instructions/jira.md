@@ -11,14 +11,17 @@ step with the work, without me asking for it.
 * **Read it first.** Fetch the ticket before you start, including its
   custom fields, and work from what it says.
 * **Starting work:** When you begin to change something for the ticket,
-  move it to "In Progress". If it has no assignee, assign it to me. If it
-  is in no sprint and its board has an active one, put it into the active
-  sprint.
-* **Review:** When a pull request for the ticket is open, move the ticket
-  to the review status, if its workflow has one. Don't link the pull
-  request in the ticket.
-* **Done is my call.** Never move a ticket to a closed or done status, and
-  never move one backwards, unless I ask.
+  move it to "In Progress" and put it into the active sprint of its board,
+  if it is not in it already. If it has no assignee, assign it to me.
+* **Testing:** While you test the change, move the ticket to the status
+  for that, such as "In QA" or "In Test".
+* **Pull request open:** When you are done and have opened the pull
+  request, move the ticket to the status that waits for the pull request,
+  such as "Wait4PR" or "Waiting for PR". Don't link the pull request in
+  the ticket.
+* **Done is my call.** Never move a ticket to a closed or done status
+  unless I ask. Between the three statuses above, move it as the work
+  goes, also back to "In Progress" when you pick it up again.
 * **Use the workflow as it is.** Status names differ per project. Look up
   the transitions the ticket offers and take the one that matches. If none
   does, leave the status and tell me.
