@@ -1,0 +1,4 @@
+{
+  "command": "npx",
+  "args": ["-y", "mcp-video-analyzer@0.12.0"]
+}

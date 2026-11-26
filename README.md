@@ -25,11 +25,27 @@ Standing guidance that always applies. Each is a Markdown file in
 | [`writing`](instructions/writing.md) | Prose style, commits, pull requests and tickets. |
 | [`jira`](instructions/jira.md) | Keeps a named Jira ticket in step with the work: in progress and active sprint at the start, in test while testing, waiting for the pull request once it is open. |
 
+## MCP servers
+
+MCP servers run programs on your machine, so Spellbook installs them only
+after you allowed this registry to (see Subscribe). Each is a JSON file in
+`mcp/`.
+
+| Server | What it does |
+|---|---|
+| [`video-analyzer`](mcp/video-analyzer.json) | Turns a video (YouTube, Loom, Vimeo, a direct link or a local file) into a transcript, key frames, OCR text and metadata. Needs Node 22.12. `yt-dlp` is needed for YouTube and similar platforms; a transcript for a video without captions needs `openai-whisper` or `OPENAI_API_KEY`. From [guimatheus92/mcp-video-analyzer](https://github.com/guimatheus92/mcp-video-analyzer), pinned to an npm version. |
+
 ## Subscribe
 
 ```sh
 spellbook init
 spellbook registry add pgraemer https://github.com/pgraemer/skills.git
+```
+
+The MCP servers are only installed once you allow them:
+
+```sh
+spellbook registry allow pgraemer mcp
 ```
 
 Only some of it:
