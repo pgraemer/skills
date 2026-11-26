@@ -14,7 +14,8 @@ description: How I want prose, commits, pull requests and tickets written
   diff can't: how the change is built and why it was made that way. Don't
   restate the code changes file by file.
 * **Frontend changes** ideally come with a screenshot of the result in the
-  description: the page or the component. A mock is fine.
+  description: the page or the component. A mock is fine. When there is
+  no screenshot, don't mention it or explain why.
 * **No routine checks in a pull request.** Leave out test runs and
   validations that belong to the toolchain anyway, such as `npm run lint`
   or `npm run test`. Add a `Testing` section only for testing that went
